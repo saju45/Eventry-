@@ -1,6 +1,12 @@
-const PaymentForm = () => {
+"use client";
+import { addGoingEvnet } from "@/app/actions";
+import { useAuth } from "@/app/hooks/useAuth";
+
+const PaymentForm = ({ eventId }) => {
+  const { auth } = useAuth();
+
   return (
-    <form>
+    <form action={() => addGoingEvnet(eventId, auth)}>
       <div className="my-4 space-y-2">
         <label htmlFor="name" className="block">
           Name
