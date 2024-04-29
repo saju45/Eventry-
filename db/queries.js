@@ -2,11 +2,18 @@ import { eventModel } from "@/models/event-models";
 import { userModel } from "@/models/user-model";
 import { replaceMongoIdInArray, replaceMongoIdInObject } from "@/utils/data-util";
 import mongoose from "mongoose";
-async function getAllEvents(){
-    const allEvents=await eventModel.find().lean();
 
-    return replaceMongoIdInArray(allEvents) ;
+async function getAllEvents(query) {
+    let allEvents = [];
+    if (query) {
+        const regex = new RegExp(query, "i");
+        allEvents = await eventModel.find({ name: { $regex: regex } }).lean();
+    } else {
+        allEvents = await eventModel.find().lean();
+    }
+    return replaceMongoIdInArray(allEvents);
 }
+
 
 async function getEventById(eventId) {
     const event = await eventModel.findById(eventId).lean();

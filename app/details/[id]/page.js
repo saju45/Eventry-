@@ -1,12 +1,26 @@
-import EventDetails from "@/components/details/EventDetails"
-import EventVenue from "@/components/details/EventVenue"
-import HeroSection from "@/components/details/HeroSection"
-import { getEventById } from "@/db/queries"
+import EventDetails from "@/components/details/EventDetails";
+import EventVenue from "@/components/details/EventVenue";
+import HeroSection from "@/components/details/HeroSection";
+import { getEventById } from "@/db/queries";
+
+
+export async function generateMetadata({params: {id}}) {
+  const event = await getEventById(id);
+
+  return {
+    title: `Eventry - ${event?.name}`,
+    description: event?.details,
+    openGraph: {
+      images: [event?.imageUrl]
+    }
+  }
+}
 
 const EventDetailsPage = async ({params:{id}}) => {
 
   const eventInfo=await getEventById(id);
-  console.log(eventInfo);
+
+
   return (
     <>
        <HeroSection eventInfo={eventInfo}/>
